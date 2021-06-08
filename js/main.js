@@ -5,18 +5,19 @@ const photosOfferArray = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
-const countElementsArray = 10;
-const firstIndexArray = 0;
-const priceMin = 1000;
-const priceMax = 100000;
-const roomsMin = 1;
-const roomsMax = 10;
-const guestsMin = 1;
-const guestsMax = 10;
-const locationXMin = 35.65000;
-const locationXMax = 35.70000;
-const locationYMin = 139.70000;
-const locationYMax = 139.80000;
+const QUANTITY_ELEMENTS_ARRAY = 10;
+const FIRST_INDEX_ARRAY = 0;
+const PRICE_MIN = 1000;
+const PRICE_MAX = 100000;
+const ROOMS_MIN = 1;
+const ROOMS_MAX = 10;
+const GUESTS_MIN = 1;
+const GUESTS_MAX = 10;
+const LOCATION_X_MIN = 35.65000;
+const LOCATION_X_MAX = 35.70000;
+const LOCATION_Y_MIN = 139.70000;
+const LOCATION_Y_MAX = 139.80000;
+const NUMBERS_AFTER_POINT = 5;
 
 function randomInteger(min, max) {
   if (min >= 0 && max >= 0 && min < max) {
@@ -41,25 +42,25 @@ const getAuthor = (iteration) => {
 
 const getOfferType = () => {
   const lastIndexArray = typeOfferArray.length - 1;
-  const randomType = typeOfferArray[randomInteger(firstIndexArray, lastIndexArray)];
+  const randomType = typeOfferArray[randomInteger(FIRST_INDEX_ARRAY, lastIndexArray)];
   return randomType;
 };
 
 const getOfferCheck = () => {
   const lastIndexArray = checkOfferArray.length - 1;
-  const randomCheck = checkOfferArray[randomInteger(firstIndexArray, lastIndexArray)];
+  const randomCheck = checkOfferArray[randomInteger(FIRST_INDEX_ARRAY, lastIndexArray)];
   return randomCheck;
 };
 
 const getOfferFeatures = () => {
   const lastIndexArray = featuresOfferArray.length - 1;
-  const randomFeatures = featuresOfferArray.slice(firstIndexArray, randomInteger(firstIndexArray + 1, lastIndexArray + 1));
+  const randomFeatures = featuresOfferArray.slice(FIRST_INDEX_ARRAY, randomInteger(FIRST_INDEX_ARRAY + 1, lastIndexArray + 1));
   return randomFeatures;
 };
 
 const getOfferPhotos = () => {
   const lastIndexArray = photosOfferArray.length - 1;
-  const randomPhotos = photosOfferArray.slice(firstIndexArray, randomInteger(firstIndexArray + 1, lastIndexArray + 1));
+  const randomPhotos = photosOfferArray.slice(FIRST_INDEX_ARRAY, randomInteger(FIRST_INDEX_ARRAY + 1, lastIndexArray + 1));
   return randomPhotos;
 };
 
@@ -67,10 +68,10 @@ const createOffer = function (location) {
   const object = {
     title: 'Очень заманчивое предложение!',
     address: `${String(location.lat)}, ${String(location.lng)}`,
-    price: randomInteger(priceMin, priceMax),
+    price: randomInteger(PRICE_MIN, PRICE_MAX),
     type: getOfferType(),
-    rooms: randomInteger(roomsMin, roomsMax),
-    guests: randomInteger(guestsMin, guestsMax),
+    rooms: randomInteger(ROOMS_MIN, ROOMS_MAX),
+    guests: randomInteger(GUESTS_MIN, GUESTS_MAX),
     checkin: getOfferCheck(),
     checkout:  getOfferCheck(),
     features: getOfferFeatures(),
@@ -82,8 +83,8 @@ const createOffer = function (location) {
 
 const getLocation = () => {
   const object = {
-    lat: randomFloat(locationXMin, locationXMax, 5),
-    lng: randomFloat(locationYMin, locationYMax, 5),
+    lat: randomFloat(LOCATION_X_MIN, LOCATION_X_MAX, NUMBERS_AFTER_POINT),
+    lng: randomFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, NUMBERS_AFTER_POINT),
   };
   return object;
 };
@@ -91,15 +92,12 @@ const getLocation = () => {
 const createProductCards = function (elements) {
   const array = [];
   for (let ii = 1; ii <= elements; ii++) {
-    const getProductCard = function () {
-      const locationValue = getLocation();
-      const object = {author:getAuthor(ii), offer:createOffer(locationValue), location:locationValue};
-      return array.push(object);
-    };
-    getProductCard();
+    const locationValue = getLocation();
+    const object = {author:getAuthor(ii), offer:createOffer(locationValue), location:locationValue};
+    array.push(object);
   }
   return array;
 };
 
-const productsData = createProductCards(countElementsArray);
+const productsData = createProductCards(QUANTITY_ELEMENTS_ARRAY);
 productsData; // что бы eslint не ругался
