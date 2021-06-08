@@ -1,6 +1,3 @@
-const productsData = [];
-const countElementsArray = 10;
-const author = [];
 const typeOfferArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const checkOfferArray = ['12:00', '13:00', '14:00'];
 const featuresOfferArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -8,7 +5,18 @@ const photosOfferArray = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
-const locationArray = [];
+const countElementsArray = 10;
+const firstIndexArray = 0;
+const priceMin = 1000;
+const priceMax = 100000;
+const roomsMin = 1;
+const roomsMax = 10;
+const guestsMin = 1;
+const guestsMax = 10;
+const locationXMin = 35.65000;
+const locationXMax = 35.70000;
+const locationYMin = 139.70000;
+const locationYMax = 139.80000;
 
 function randomInteger(min, max) {
   if (min >= 0 && max >= 0 && min < max) {
@@ -26,82 +34,72 @@ function randomFloat(min, max, countNumber) {
   return 'Ошибка! Введенные значения диапазона недопустимы!';
 }
 
-const getAuthor = () => {
-  for (let ii = 1; ii <= countElementsArray; ii++) {
-    const object = {};
-    object.avatar = `img/avatars/user0${ii}.png`;
-    author.push(object);
-  }
+const getAuthor = (iteration) => {
+  const object = {avatar:`img/avatars/user0${iteration}.png`};
+  return object;
 };
 
 const getOfferType = () => {
-  const randomType = typeOfferArray[randomInteger(0, 4)];
+  const lastIndexArray = typeOfferArray.length - 1;
+  const randomType = typeOfferArray[randomInteger(firstIndexArray, lastIndexArray)];
   return randomType;
 };
 
 const getOfferCheck = () => {
-  const randomCheck = checkOfferArray[randomInteger(0, 2)];
+  const lastIndexArray = checkOfferArray.length - 1;
+  const randomCheck = checkOfferArray[randomInteger(firstIndexArray, lastIndexArray)];
   return randomCheck;
 };
 
 const getOfferFeatures = () => {
-  const randomFeatures = featuresOfferArray.slice(0, randomInteger(1, 6));
+  const lastIndexArray = featuresOfferArray.length - 1;
+  const randomFeatures = featuresOfferArray.slice(firstIndexArray, randomInteger(firstIndexArray + 1, lastIndexArray + 1));
   return randomFeatures;
 };
 
 const getOfferPhotos = () => {
-  const randomPhotos = photosOfferArray.slice(0, randomInteger(1, 4));
+  const lastIndexArray = photosOfferArray.length - 1;
+  const randomPhotos = photosOfferArray.slice(firstIndexArray, randomInteger(firstIndexArray + 1, lastIndexArray + 1));
   return randomPhotos;
 };
 
 const createOffer = function (location) {
-  const offerObject = {
+  const object = {
     title: 'Очень заманчивое предложение!',
     address: `${String(location.lat)}, ${String(location.lng)}`,
-    price: randomInteger(1000, 100000),
+    price: randomInteger(priceMin, priceMax),
     type: getOfferType(),
-    rooms: randomInteger(1, 10),
-    guests: randomInteger(1, 10),
+    rooms: randomInteger(roomsMin, roomsMax),
+    guests: randomInteger(guestsMin, guestsMax),
     checkin: getOfferCheck(),
     checkout:  getOfferCheck(),
     features: getOfferFeatures(),
     description: 'Современный ремонт, сделанный совсем недавно. Хорошая мебель и уютная обстановка. удобное расположение.',
     photos: getOfferPhotos(),
   };
-  return offerObject;
+  return object;
 };
 
-const getLocationArray = function (elements) {
-  const getLocation = function () {
-    const location = {
-      lat: randomFloat(35.65000, 35.70000, 5),
-      lng: randomFloat(139.70000, 139.80000, 5),
-    };
-    return location;
+const getLocation = () => {
+  const object = {
+    lat: randomFloat(locationXMin, locationXMax, 5),
+    lng: randomFloat(locationYMin, locationYMax, 5),
   };
-
-  for (let ii = 0; ii < elements; ii++) {
-    locationArray.push(getLocation());
-  }
-  return locationArray;
+  return object;
 };
-
-getAuthor();
-getLocationArray(countElementsArray);
 
 const createProductCards = function (elements) {
-  for (let ii = 0; ii < elements; ii++) {
+  const array = [];
+  for (let ii = 1; ii <= elements; ii++) {
     const getProductCard = function () {
-      const object = {};
-      object.autor = author[ii];
-      object.offer = createOffer(locationArray[ii]);
-      object.location = locationArray[ii];
-      return productsData.push(object);
+      const locationValue = getLocation();
+      const object = {author:getAuthor(ii), offer:createOffer(locationValue), location:locationValue};
+      return array.push(object);
     };
     getProductCard();
   }
-  return productsData;
+  return array;
 };
 
-createProductCards(countElementsArray);
-// console.log(productsData);
+const productsData = createProductCards(countElementsArray);
+productsData; // что бы eslint не ругался
