@@ -1,5 +1,6 @@
 import {randomInteger, randomFloat} from './util.js';
 
+const QUANTITY_ELEMENTS_ARRAY = 9;
 const typeOfferArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const checkOfferArray = ['12:00', '13:00', '14:00'];
 const featuresOfferArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -60,7 +61,7 @@ const createOffer = function (location) {
     checkin: getOfferCheck(),
     checkout:  getOfferCheck(),
     features: getOfferFeatures(),
-    description: 'Современный ремонт, сделанный совсем недавно. Хорошая мебель и уютная обстановка. удобное расположение.',
+    description: 'Современный ремонт, сделанный совсем недавно. Хорошая мебель и уютная обстановка. Удобное расположение.',
     photos: getOfferPhotos(),
   };
   return object;
@@ -76,12 +77,13 @@ const getLocation = () => {
 
 const createProductCards = function (elements) {
   const array = [];
-  for (let ii = 1; ii <= elements; ii++) {
+  for (let i = 1; i <= elements; i++) {
     const locationValue = getLocation();
-    const object = {author:getAuthor(ii), offer:createOffer(locationValue), location:locationValue};
+    const object = {author:getAuthor(i), offer:createOffer(locationValue), location:locationValue};
     array.push(object);
   }
   return array;
 };
 
-export {createProductCards};
+const dataRandomArray = createProductCards(QUANTITY_ELEMENTS_ARRAY);
+export {dataRandomArray};
