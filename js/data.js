@@ -1,6 +1,6 @@
 import {randomInteger, randomFloat} from './util.js';
 
-const QUANTITY_ELEMENTS_ARRAY = 9;
+const QUANTITY_ELEMENTS_ARRAY = 10;
 const typeOfferArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const checkOfferArray = ['12:00', '13:00', '14:00'];
 const featuresOfferArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -77,9 +77,9 @@ const getLocation = () => {
 
 const createProductCards = function (elements) {
   const array = [];
-  for (let i = 1; i <= elements; i++) {
+  for (let i = 0; i < elements; i++) {
     const locationValue = getLocation();
-    const object = {author:getAuthor(i), offer:createOffer(locationValue), location:locationValue};
+    const object = {author:getAuthor(i + 1), offer:createOffer(locationValue), location:locationValue};
     array.push(object);
   }
   return array;

@@ -1,2 +1,3 @@
-import {mapCanvas} from './create-card.js';
-mapCanvas; // ESLint ругается. Генерирование разметки похожих объявлений прямо в блок карты
+import {dataRandomArray} from './data.js';
+import {getCard} from './create-card.js';
+getCard(dataRandomArray[0]); // Функция создает одно объявление на основе переданного элемента из массива

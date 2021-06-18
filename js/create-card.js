@@ -1,31 +1,36 @@
-import {dataRandomArray} from './data.js';
-
 const mapCanvas = document.querySelector('.map__canvas');
 const cardTemplateFragment = document.querySelector('#card').content;
 const templateCard = cardTemplateFragment.querySelector('.popup');
-const fragment = document.createDocumentFragment();
-const cardsRandom = dataRandomArray;
+const element = templateCard.cloneNode(true);
+const popupTitle = element.querySelector('.popup__title');
+const popupAddress = element.querySelector('.popup__text--address');
+const popupPrice = element.querySelector('.popup__text--price');
+const popupType = element.querySelector('.popup__type');
+const popupCapacity = element.querySelector('.popup__text--capacity');
+const popupTime = element.querySelector('.popup__text--time');
+const featureList = element.querySelector('.popup__features');
+const popupDescription = element.querySelector('.popup__description');
+const popupPhotos = element.querySelector('.popup__photos');
+const popupPhoto = popupPhotos.querySelector('.popup__photo');
+const popupAvatar = element.querySelector('.popup__avatar');
 
-const getCardType = function (type) {
-  let popupType = type;
-  switch (popupType) {
-    case 'flat': popupType = 'Квартира';
-      break;
-    case 'bungalow': popupType = 'Бунгало';
-      break;
-    case 'house': popupType = 'Дом';
-      break;
-    case 'palace': popupType = 'Дворец';
-      break;
-    case 'hotel': popupType = 'Отель';
-      break;
-    default: popupType = 'Ошибка! Тип жилья не определен';
-  }
-  return popupType;
+const getCardType = function (key) {
+  const typeList = {
+    'palace': 'Дворец',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalow': 'Бунгало',
+    'hotel': 'Отель',
+  };
+
+  const findValue = function (type) {
+    return typeList[type];
+  };
+
+  return findValue(key);
 };
 
-const getCardFeatures = function (element, dataFeatures) {
-  const featureList = element.querySelector('.popup__features');
+const getCardFeatures = function (dataFeatures) {
   const modifiers = dataFeatures.map((feature) => `popup__feature--${feature}`);
   featureList.querySelectorAll('.popup__feature').forEach((item) => {
     const modifier = item.classList[1];
@@ -35,83 +40,41 @@ const getCardFeatures = function (element, dataFeatures) {
   });
 };
 
-const getCardPhotos = function (element, dataPhotos) {
-  const photos = element.querySelector('.popup__photos');
-  const photo = photos.querySelector('.popup__photo');
-  dataPhotos.forEach((item) => {
-    const newImg = photo.cloneNode(true);
+const getCardPhotos = function (data) {
+  data.forEach((item) => {
+    const newImg = popupPhoto.cloneNode(true);
     newImg.src = item;
-    photos.append(newImg);
+    popupPhotos.append(newImg);
   });
-  const photoCollection = photos.querySelectorAll('.popup__photo');
+  const photoCollection = popupPhotos.querySelectorAll('.popup__photo');
   photoCollection[0].remove();
 };
 
-const isData = function (element) {
-  if (!element.querySelector('.popup__title').textContent) {
-    element.querySelector('.popup__title').style = 'display: none';
+const isData = (data, item) => {
+  if (data) {
+    return data;
   }
-  else if (!element.querySelector('.popup__text--address').textContent) {
-    element.querySelector('.popup__text--address').style = 'display: none';
-  }
-  else if (!element.querySelector('.popup__text--price').textContent) {
-    element.querySelector('.popup__text--price').style = 'display: none';
-  }
-  else if (!element.querySelector('.popup__type').textContent) {
-    element.querySelector('.popup__type').style = 'display: none';
-  }
-  else if (!element.querySelector('.popup__text--capacity').textContent) {
-    element.querySelector('.popup__text--capacity').style = 'display: none';
-  }
-  else if (!element.querySelector('.popup__text--time').textContent) {
-    element.querySelector('.popup__text--time').style = 'display: none';
-  }
-  else if (!element.querySelector('.popup__features').children) {
-  // В DOM дереве не прописывает style = 'display: none' во время тестов, не уверен что if срабатывает при таком условии
-    element.querySelector('.popup__features').style = 'display: none';
-  }
-  else if (!element.querySelector('.popup__description').textContent) {
-    element.querySelector('.popup__description').style = 'display: none';
-  }
-  else if (!element.querySelector('.popup__photos').children) {
-    element.querySelector('.popup__photos').style = 'display: none';
-  }
-  else if (!element.querySelector('.popup__avatar').src) {
-    element.querySelector('.popup__avatar').style = 'display: none';
-  }
+  return item.style = 'display: none';
 };
 
-cardsRandom.forEach((index) => {
-  const element = templateCard.cloneNode(true);
-  element.querySelector('.popup__title').textContent = index.offer.title;
-  element.querySelector('.popup__text--address').textContent = index.offer.address;
-  element.querySelector('.popup__text--price').textContent = index.offer.price;
-  element.querySelector('.popup__text--price').insertAdjacentHTML('beforeend', '<span> ₽/ночь</span>');
-  element.querySelector('.popup__type').textContent = getCardType(index.offer.type);
-  element.querySelector('.popup__text--capacity').textContent =
-    `${index.offer.rooms} комнаты для ${index.offer.guests} гостей`;
-  element.querySelector('.popup__text--time').textContent =
-    `Заезд после ${index.offer.checkin}, выезд до ${index.offer.checkout}`;
-  getCardFeatures(element, index.offer.features);
-  element.querySelector('.popup__description').textContent = index.offer.description;
-  getCardPhotos(element, index.offer.photos);
-  element.querySelector('.popup__avatar').src = index.author.avatar;
+const getCard = function (index) {
+  popupTitle.textContent = isData(index.offer.title, popupTitle);
+  popupAddress.textContent = isData(index.offer.address, popupAddress);
+  popupPrice.textContent = isData(index.offer.price, popupPrice);
+  popupPrice.insertAdjacentHTML('beforeend', '<span> ₽/ночь</span>');
+  popupType.textContent = isData(getCardType(index.offer.type), popupType);
+  popupCapacity.textContent =
+  `${isData(index.offer.rooms, popupCapacity)} комнаты для ${isData(index.offer.guests, popupCapacity)} гостей`;
+  popupTime.textContent =
+  `Заезд после ${isData(index.offer.checkin, popupTime)}, выезд до ${isData(index.offer.checkout, popupTime)}`;
+  getCardFeatures(isData(index.offer.features, featureList));
+  popupDescription.textContent = isData(index.offer.description, popupDescription);
+  getCardPhotos(isData(index.offer.photos, popupPhotos));
+  popupAvatar.src = isData(index.author.avatar, popupAvatar);
 
-  isData(element);
-
-  fragment.appendChild(element);
-});
-
-mapCanvas.appendChild(fragment);
-
-const mapShowFirstItem = (collection) => {
-  const filter = collection.children;
-  for (let i = 1; i < filter.length; i++) {
-    filter[i].style = 'display: none;';
-  }
+  mapCanvas.appendChild(element);
 };
 
-mapShowFirstItem(mapCanvas);
 // console.log(mapCanvas);
 
-export {mapCanvas};
+export {getCard};
