@@ -50,27 +50,59 @@ const getCardPhotos = function (data) {
   photoCollection[0].remove();
 };
 
-const isData = (data, item) => {
+const isDataForFunction = (data, item) => {
   if (data) {
     return data;
   }
   return item.style = 'display: none';
 };
 
+const isDataForVariable = (data, item, keyword) => {
+
+  if (data) {
+    const keyList = {
+      'textContent': item.textContent = data,
+      'src': item.src = data,
+      'information': data, // getCardFeatures() и getCardPhotos() не правильно работают с этим возвращенным значением, поэтому не использовал
+    };
+
+    const findValue = function (key) {
+      return keyList[key];
+    };
+
+    return findValue(keyword);
+  }
+  else {
+    return item.style = 'display: none';
+  }
+};
+
+
 const getCard = function (index) {
-  popupTitle.textContent = isData(index.offer.title, popupTitle);
-  popupAddress.textContent = isData(index.offer.address, popupAddress);
-  popupPrice.textContent = isData(index.offer.price, popupPrice);
+  isDataForVariable(index.offer.title, popupTitle, 'textContent');
+  isDataForVariable(index.offer.address, popupAddress, 'textContent');
+  isDataForVariable(index.offer.price, popupPrice, 'textContent');
   popupPrice.insertAdjacentHTML('beforeend', '<span> ₽/ночь</span>');
-  popupType.textContent = isData(getCardType(index.offer.type), popupType);
-  popupCapacity.textContent =
-  `${isData(index.offer.rooms, popupCapacity)} комнаты для ${isData(index.offer.guests, popupCapacity)} гостей`;
-  popupTime.textContent =
-  `Заезд после ${isData(index.offer.checkin, popupTime)}, выезд до ${isData(index.offer.checkout, popupTime)}`;
-  getCardFeatures(isData(index.offer.features, featureList));
-  popupDescription.textContent = isData(index.offer.description, popupDescription);
-  getCardPhotos(isData(index.offer.photos, popupPhotos));
-  popupAvatar.src = isData(index.author.avatar, popupAvatar);
+  isDataForVariable(getCardType(index.offer.type), popupType, 'textContent');
+
+  if (index.offer.rooms && index.offer.guests) {
+    popupCapacity.textContent =
+  `${index.offer.rooms} комнаты для ${index.offer.guests} гостей`;
+  } else {
+    popupCapacity.style = 'display: none';
+  }
+
+  if (index.offer.checkin && index.offer.checkout) {
+    popupTime.textContent =
+    `Заезд после ${index.offer.checkin}, выезд до ${index.offer.checkout}`;
+  } else {
+    popupTime.style = 'display: none';
+  }
+
+  getCardFeatures(isDataForFunction(index.offer.features, featureList));
+  isDataForVariable(index.offer.description, popupDescription, 'textContent');
+  getCardPhotos(isDataForFunction(index.offer.photos, popupPhotos));
+  isDataForVariable(index.author.avatar, popupAvatar, 'src');
 
   mapCanvas.appendChild(element);
 };
