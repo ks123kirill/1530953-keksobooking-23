@@ -1,6 +1,3 @@
-import {createProductCards} from './data.js';
-const QUANTITY_ELEMENTS_ARRAY = 10;
-
-const productsData = createProductCards(QUANTITY_ELEMENTS_ARRAY);
-productsData; // что бы eslint не ругался
-// console.log(productsData);
+import {dataRandomArray} from './data.js';
+import {getCard} from './create-card.js';
+getCard(dataRandomArray[1]); // Функция создает одно объявление на основе переданного элемента из массива
