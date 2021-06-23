@@ -1,23 +1,32 @@
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE_VALUE = 1000000;
+const getValueCapacityRoom = function (key) {
+  const itemList = {
+    '1 room': '1',
+    '2 rooms': '2',
+    '3 rooms': '3',
+    '100 rooms': '100',
+    '1 guest': '1',
+    '2 guests': '2',
+    '3 guests': '3',
+    '0 guests': '0',
+  };
 
-const FIRST_VALUE_ROOM_NUMBER = '1';
-const SECOND_VALUE_ROOM_NUMBER = '2';
-const THIRD_VALUE_ROOM_NUMBER = '3';
-const FORTH_VALUE_ROOM_NUMBER = '100';
+  const findValue = function (item) {
+    return itemList[item];
+  };
 
-const ONE_GUEST_CAPACITY = '1';
-const TWO_GUEST_CAPACITY = '2';
-const THREE_GUEST_CAPACITY = '3';
-const NOBODY_GUEST_CAPACITY = '0';
+  return findValue(key);
+};
 
 const adForm = document.querySelector('.ad-form');
 const adTitleInput = adForm.querySelector('#title');
 const adPriceInput = adForm.querySelector('#price');
-const adRoomNumberInput = adForm.querySelector('#room_number');
+const adRoomNumberFieldset = adForm.querySelector('#room_number');
+const adRoomNumberInputList = adRoomNumberFieldset.children;
 const adCapacityInput = adForm.querySelector('#capacity');
-const adCapacityInputOptions = adCapacityInput.children;
+const adCapacityInputList = adCapacityInput.children;
 
 adTitleInput.addEventListener('input', () => {
   const valueLength = adTitleInput.value.length;
@@ -45,52 +54,48 @@ adPriceInput.addEventListener('input', () => {
   adPriceInput.reportValidity();
 });
 
-adRoomNumberInput.addEventListener('change', () => {
-  const valueRoomNumber = adRoomNumberInput.value;
+const getDisabledCapacity = function () {
+  for (let i = 0; i < adRoomNumberInputList.length; i++) {
 
-  if (valueRoomNumber === FIRST_VALUE_ROOM_NUMBER) {
-    for (let i = 0; i < adCapacityInputOptions.length; i++) {
-      if (adCapacityInputOptions[i].value !== ONE_GUEST_CAPACITY) {
-        adCapacityInputOptions[i].disabled = true;
-        continue;
-      }
-      adCapacityInputOptions[i].disabled = false;
-      adCapacityInputOptions[i].selected = true;
-    }
-  }
+    if ((adRoomNumberInputList[i].value = getValueCapacityRoom('1 room'))) {
 
-  else if (valueRoomNumber === SECOND_VALUE_ROOM_NUMBER) {
-    for (let i = 0; i < adCapacityInputOptions.length; i++) {
-      if (adCapacityInputOptions[i].value !== ONE_GUEST_CAPACITY) {
-        if (adCapacityInputOptions[i].value !== TWO_GUEST_CAPACITY) {
-          adCapacityInputOptions[i].disabled = true;
-          continue;
+      for (let j = 0; j < adCapacityInputList.length; j++) {
+
+        if (adCapacityInputList[j].value !== getValueCapacityRoom('1 guest')) {
+          adCapacityInputList[j].disabled = true;
         }
       }
-      adCapacityInputOptions[i].disabled = false;
-      adCapacityInputOptions[i].selected = true;
     }
   }
+};
 
-  else if (valueRoomNumber === THIRD_VALUE_ROOM_NUMBER) {
-    for (let i = 0; i < adCapacityInputOptions.length; i++) {
-      if ((adCapacityInputOptions[i].value === ONE_GUEST_CAPACITY) || (adCapacityInputOptions[i].value === TWO_GUEST_CAPACITY) || (adCapacityInputOptions[i].value === THREE_GUEST_CAPACITY)) {
-        adCapacityInputOptions[i].disabled = false;
-        adCapacityInputOptions[i].selected = true;
-        continue;
-      }
-      adCapacityInputOptions[i].disabled = true;
-    }
-  }
+/* Функция устанавливает исходные настройки выбора: 1 room - 1 guest, выбор других опций количества guests заблокирован для 1 room. */
+getDisabledCapacity;
 
-  else if (valueRoomNumber === FORTH_VALUE_ROOM_NUMBER) {
-    for (let i = 0; i < adCapacityInputOptions.length; i++) {
-      if (adCapacityInputOptions[i].value !== NOBODY_GUEST_CAPACITY) {
-        adCapacityInputOptions[i].disabled = true;
-        continue;
-      }
-      adCapacityInputOptions[i].disabled = false;
-      adCapacityInputOptions[i].selected = true;
+const filterChangeHandler = function (evt) {
+  const valueRoomNumber = evt.target.value;
+  /* Есть проблема: после getDisabledCapacity(),
+  evt.target.value всегда равно 1 при выборе количества комнат. Почему?*/
+
+  for (let i = 0; i < adCapacityInputList.length; i++) {
+
+    if ((valueRoomNumber === getValueCapacityRoom('100 rooms')) &&
+      (adCapacityInputList[i].value === getValueCapacityRoom('0 guests'))) {
+      adCapacityInputList[i].disabled = false;
+      adCapacityInputList[i].selected = true;
+      continue;
     }
+
+    else if ((valueRoomNumber !== getValueCapacityRoom('100 rooms')) &&
+      (valueRoomNumber >= adCapacityInputList[i].value) &&
+      (adCapacityInputList[i].value !== getValueCapacityRoom('0 guests'))) {
+      adCapacityInputList[i].disabled = false;
+      adCapacityInputList[i].selected = true;
+      continue;
+    }
+
+    adCapacityInputList[i].disabled = true;
   }
-});
+};
+
+adRoomNumberFieldset.addEventListener('change', filterChangeHandler);
