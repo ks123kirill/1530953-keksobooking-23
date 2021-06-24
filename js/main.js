@@ -1,5 +1,6 @@
 import {dataRandomArray} from './data.js';
 import {getCard} from './create-card.js';
+import './form-validation.js';
 import {statusActivityPage} from './form-status.js';
 
 /* statusActivityPage() - Функция активация страницы. True - данные с сервера получены и страница активная, false - данные не получены и страница заблокирована */
