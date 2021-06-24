@@ -1,32 +1,16 @@
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE_VALUE = 1000000;
-const getValueCapacityRoom = function (key) {
-  const itemList = {
-    '1 room': '1',
-    '2 rooms': '2',
-    '3 rooms': '3',
-    '100 rooms': '100',
-    '1 guest': '1',
-    '2 guests': '2',
-    '3 guests': '3',
-    '0 guests': '0',
-  };
-
-  const findValue = function (item) {
-    return itemList[item];
-  };
-
-  return findValue(key);
-};
-
 const adForm = document.querySelector('.ad-form');
 const adTitleInput = adForm.querySelector('#title');
 const adPriceInput = adForm.querySelector('#price');
-const adRoomNumberFieldset = adForm.querySelector('#room_number');
-const adRoomNumberInputList = adRoomNumberFieldset.children;
-const adCapacityInput = adForm.querySelector('#capacity');
-const adCapacityInputList = adCapacityInput.children;
+const adRoomNumberSelect = adForm.querySelector('#room_number');
+const adCapacitySelect = adForm.querySelector('#capacity');
+const adCapacityInputList = adCapacitySelect.children;
+const keyValueList = {
+  '100 rooms': '100',
+  '0 guests': '0',
+};
 
 adTitleInput.addEventListener('input', () => {
   const valueLength = adTitleInput.value.length;
@@ -55,40 +39,26 @@ adPriceInput.addEventListener('input', () => {
 });
 
 const getDisabledCapacity = function () {
-  for (let i = 0; i < adRoomNumberInputList.length; i++) {
-
-    if ((adRoomNumberInputList[i].value = getValueCapacityRoom('1 room'))) {
-
-      for (let j = 0; j < adCapacityInputList.length; j++) {
-
-        if (adCapacityInputList[j].value !== getValueCapacityRoom('1 guest')) {
-          adCapacityInputList[j].disabled = true;
-        }
-      }
+  for (let i = 0; i < adCapacityInputList.length; i++) {
+    if (!adCapacityInputList[i].selected) {
+      adCapacityInputList[i].disabled = true;
     }
   }
 };
 
-/* Функция устанавливает исходные настройки выбора: 1 room - 1 guest, выбор других опций количества guests заблокирован для 1 room. */
-getDisabledCapacity;
+/* getDisabledCapacity() устанавливает исходные настройки выбора: capacity options не имеющие атрибут selected, получают атрибут disabled. */
+getDisabledCapacity();
 
 const filterChangeHandler = function (evt) {
   const valueRoomNumber = evt.target.value;
-  /* Есть проблема: после getDisabledCapacity(),
-  evt.target.value всегда равно 1 при выборе количества комнат. Почему?*/
 
   for (let i = 0; i < adCapacityInputList.length; i++) {
 
-    if ((valueRoomNumber === getValueCapacityRoom('100 rooms')) &&
-      (adCapacityInputList[i].value === getValueCapacityRoom('0 guests'))) {
-      adCapacityInputList[i].disabled = false;
-      adCapacityInputList[i].selected = true;
-      continue;
-    }
-
-    else if ((valueRoomNumber !== getValueCapacityRoom('100 rooms')) &&
+    if (((valueRoomNumber === keyValueList['100 rooms']) &&
+      (adCapacityInputList[i].value === keyValueList['0 guests'])) ||
+      ((valueRoomNumber !== keyValueList['100 rooms']) &&
       (valueRoomNumber >= adCapacityInputList[i].value) &&
-      (adCapacityInputList[i].value !== getValueCapacityRoom('0 guests'))) {
+      (adCapacityInputList[i].value !== keyValueList['0 guests']))) {
       adCapacityInputList[i].disabled = false;
       adCapacityInputList[i].selected = true;
       continue;
@@ -98,4 +68,4 @@ const filterChangeHandler = function (evt) {
   }
 };
 
-adRoomNumberFieldset.addEventListener('change', filterChangeHandler);
+adRoomNumberSelect.addEventListener('change', filterChangeHandler);
