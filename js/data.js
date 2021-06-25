@@ -1,6 +1,6 @@
 import {randomInteger, randomFloat} from './util.js';
 
-const QUANTITY_ELEMENTS_ARRAY = 10;
+const QUANTITY_ELEMENTS_ARRAY = 9;
 const typeOfferArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const checkOfferArray = ['12:00', '13:00', '14:00'];
 const featuresOfferArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];

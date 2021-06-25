@@ -105,6 +105,7 @@ const getCard = function (index) {
   isDataForVariable(index.author.avatar, popupAvatar, 'src');
 
   mapCanvas.appendChild(element);
+  return element;
 };
 
 // console.log(mapCanvas);
