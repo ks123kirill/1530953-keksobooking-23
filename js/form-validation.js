@@ -87,7 +87,7 @@ const typeChangeHandler = function (evt) {
 
   adPriceInput.placeholder = keyValueList[valueType];
   adPriceInput.min = keyValueList[valueType];
-}
+};
 
 adTypeSelect.addEventListener('change', typeChangeHandler);
 
