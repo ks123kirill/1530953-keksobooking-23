@@ -9,7 +9,7 @@ import {getCard} from './create-card.js';
 statusActivityPage(false);
 const dataMap = dataRandomArray;
 
-let addressInput = document.querySelector('#address');
+const addressInput = document.querySelector('#address');
 addressInput.readOnly = true;
 
 const map = L.map('map-canvas')
@@ -43,7 +43,7 @@ const mainMarker = L.marker(
   },
   {
     draggable: true,
-    icon: iconSpecial
+    icon: iconSpecial,
   },
 );
 
@@ -60,7 +60,7 @@ dataMap.forEach(({author, offer, location}) => {
       iconUrl: './img/pin.svg',
       iconSize: [40, 40],
       iconAnchor: [20,40],
-    }
+    },
   );
 
   const lat = location.lat;
@@ -68,8 +68,8 @@ dataMap.forEach(({author, offer, location}) => {
 
   const marker = L.marker(
     {
-    lat,
-    lng,
+      lat,
+      lng,
     },
     {
       icon,
