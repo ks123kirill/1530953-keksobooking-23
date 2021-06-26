@@ -1,8 +1,11 @@
+/* dataRandomArray - рандомно сгенерированный массив данных для карточки продукта */
 import {dataRandomArray} from './data.js';
-import {statusActivityPage} from './form-status.js';
-import {getCard} from './create-card.js';
-
 /* statusActivityPage() - Функция активация страницы. True - данные с сервера получены и страница активная, false - данные не получены и страница заблокирована */
+import {statusActivityPage} from './form-status.js';
+// getCard(); // Функция создает одно объявление на основе переданного элемента из массива
+import {getCard} from './create-card.js';
+// import '../leaflet/leaflet.js'; // Не подключается
+
 statusActivityPage(false);
 const dataMap = dataRandomArray;
 
@@ -73,9 +76,6 @@ dataMap.forEach(({author, offer, location}) => {
     },
   );
 
-  /* В этом месте проблема:
-  1. getCard() рисует Карточку, но только последнего элемента массива dataMap во всех баллунах.
-  2. Отрисованная Карточка отображает неправильное кол-во фотографий квартиры */
   marker
     .addTo(map)
     .bindPopup(getCard({author, offer, location}),

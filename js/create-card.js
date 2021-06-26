@@ -1,18 +1,5 @@
-const mapCanvas = document.querySelector('.map__canvas');
 const cardTemplateFragment = document.querySelector('#card').content;
 const templateCard = cardTemplateFragment.querySelector('.popup');
-const element = templateCard.cloneNode(true);
-const popupTitle = element.querySelector('.popup__title');
-const popupAddress = element.querySelector('.popup__text--address');
-const popupPrice = element.querySelector('.popup__text--price');
-const popupType = element.querySelector('.popup__type');
-const popupCapacity = element.querySelector('.popup__text--capacity');
-const popupTime = element.querySelector('.popup__text--time');
-const featureList = element.querySelector('.popup__features');
-const popupDescription = element.querySelector('.popup__description');
-const popupPhotos = element.querySelector('.popup__photos');
-const popupPhoto = popupPhotos.querySelector('.popup__photo');
-const popupAvatar = element.querySelector('.popup__avatar');
 
 const getCardType = function (key) {
   const typeList = {
@@ -30,7 +17,7 @@ const getCardType = function (key) {
   return findValue(key);
 };
 
-const getCardFeatures = function (dataFeatures) {
+const getCardFeatures = function (dataFeatures, featureList) {
   const modifiers = dataFeatures.map((feature) => `popup__feature--${feature}`);
   featureList.querySelectorAll('.popup__feature').forEach((item) => {
     const modifier = item.classList[1];
@@ -40,7 +27,7 @@ const getCardFeatures = function (dataFeatures) {
   });
 };
 
-const getCardPhotos = function (data) {
+const getCardPhotos = function (data, popupPhoto, popupPhotos) {
   data.forEach((item) => {
     const newImg = popupPhoto.cloneNode(true);
     newImg.src = item;
@@ -63,7 +50,6 @@ const isDataForVariable = (data, item, keyword) => {
     const keyList = {
       'textContent': item.textContent = data,
       'src': item.src = data,
-      'information': data, // getCardFeatures() и getCardPhotos() не правильно работают с этим возвращенным значением, поэтому не использовал
     };
 
     const findValue = function (key) {
@@ -79,6 +65,19 @@ const isDataForVariable = (data, item, keyword) => {
 
 
 const getCard = function (index) {
+  const element = templateCard.cloneNode(true);
+  const popupTitle = element.querySelector('.popup__title');
+  const popupAddress = element.querySelector('.popup__text--address');
+  const popupPrice = element.querySelector('.popup__text--price');
+  const popupType = element.querySelector('.popup__type');
+  const popupCapacity = element.querySelector('.popup__text--capacity');
+  const popupTime = element.querySelector('.popup__text--time');
+  const featureList = element.querySelector('.popup__features');
+  const popupDescription = element.querySelector('.popup__description');
+  const popupPhotos = element.querySelector('.popup__photos');
+  const popupPhoto = popupPhotos.querySelector('.popup__photo');
+  const popupAvatar = element.querySelector('.popup__avatar');
+
   isDataForVariable(index.offer.title, popupTitle, 'textContent');
   isDataForVariable(index.offer.address, popupAddress, 'textContent');
   isDataForVariable(index.offer.price, popupPrice, 'textContent');
@@ -99,15 +98,12 @@ const getCard = function (index) {
     popupTime.style = 'display: none';
   }
 
-  getCardFeatures(isDataForFunction(index.offer.features, featureList));
+  getCardFeatures(isDataForFunction(index.offer.features, featureList), featureList);
   isDataForVariable(index.offer.description, popupDescription, 'textContent');
-  getCardPhotos(isDataForFunction(index.offer.photos, popupPhotos));
+  getCardPhotos(isDataForFunction(index.offer.photos, popupPhotos), popupPhoto, popupPhotos);
   isDataForVariable(index.author.avatar, popupAvatar, 'src');
 
-  mapCanvas.appendChild(element);
   return element;
 };
-
-// console.log(mapCanvas);
 
 export {getCard};
