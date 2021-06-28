@@ -12,9 +12,12 @@ const adTimeInSelect = adForm.querySelector('#timein');
 const adTimeInList = adTimeInSelect.children;
 const adTimeOutSelect = adForm.querySelector('#timeout');
 const adTimeOutList = adTimeOutSelect.children;
-const keyValueList = {
+const keyRoomGuestList = {
   '100 rooms': '100',
   '0 guests': '0',
+};
+
+const keyTypeList = {
   'bungalow': '0',
   'flat': '5000',
   'hotel': '3000',
@@ -65,11 +68,11 @@ const roomNumberChangeHandler = function (evt) {
 
   for (let i = 0; i < adCapacityInputList.length; i++) {
 
-    if (((valueRoomNumber === keyValueList['100 rooms']) &&
-      (adCapacityInputList[i].value === keyValueList['0 guests'])) ||
-      ((valueRoomNumber !== keyValueList['100 rooms']) &&
+    if (((valueRoomNumber === keyRoomGuestList['100 rooms']) &&
+      (adCapacityInputList[i].value === keyRoomGuestList['0 guests'])) ||
+      ((valueRoomNumber !== keyRoomGuestList['100 rooms']) &&
       (valueRoomNumber >= adCapacityInputList[i].value) &&
-      (adCapacityInputList[i].value !== keyValueList['0 guests']))) {
+      (adCapacityInputList[i].value !== keyRoomGuestList['0 guests']))) {
       adCapacityInputList[i].disabled = false;
       adCapacityInputList[i].selected = true;
       continue;
@@ -85,53 +88,46 @@ const typeChangeHandler = function (evt) {
   adPriceInput.value = null;
   const valueType = evt.target.value;
 
-  adPriceInput.placeholder = keyValueList[valueType];
-  adPriceInput.min = keyValueList[valueType];
+  adPriceInput.placeholder = keyTypeList[valueType];
+  adPriceInput.min = keyTypeList[valueType];
 };
 
 adTypeSelect.addEventListener('change', typeChangeHandler);
 
-const timeInChangeHandler = function (evt) {
-  const valueTimeIn = evt.target.value;
-  for (let i = 0; i < adTimeOutList.length; i++) {
-    if (valueTimeIn === adTimeOutList[i].value) {
-      adTimeOutList[i].selected = true;
-    }
-    else {
-      adTimeOutList[i].selected = false;
-    }
-  }
-};
-
-adTimeInSelect.addEventListener('change', timeInChangeHandler);
-
-const timeOutChangeHandler = function (evt) {
-  const valueTimeOut = evt.target.value;
-  for (let i = 0; i < adTimeInList.length; i++) {
-    if (valueTimeOut === adTimeInList[i].value) {
-      adTimeInList[i].selected = true;
-    }
-    else {
-      adTimeInList[i].selected = false;
-    }
-  }
-};
-
-adTimeOutSelect.addEventListener('change', timeOutChangeHandler);
-
-//Как принять collection параметром вместе с evt?
-
-// const timeChangeHandler = function (evt, collection) {
-//   const valueTime = evt.target.value;
-//   for (let i = 0; i < collection.length; i++) {
-//     if (valueTime === collection[i].value) {
-//       collection[i].selected = true;
-//     }
-//     else {
-//       collection[i].selected = false;
-//     }
+// const timeInChangeHandler = function (evt) {
+//   const valueTimeIn = evt.target.value;
+//   for (let i = 0; i < adTimeOutList.length; i++) {
+//     adTimeOutList[i].selected = valueTimeIn === adTimeOutList[i].value;
 //   }
 // };
 
-// adTimeInSelect.addEventListener('change', timeChangeHandler(adTimeOutList));
-// adTimeOutSelect.addEventListener('change', timeChangeHandler(adTimeInList));
+// adTimeInSelect.addEventListener('change', timeInChangeHandler);
+
+// const timeOutChangeHandler = function (evt) {
+//   const valueTimeOut = evt.target.value;
+//   for (let i = 0; i < adTimeInList.length; i++) {
+//     adTimeInList[i].selected = valueTimeOut === adTimeInList[i].value;
+//   }
+// };
+
+// adTimeOutSelect.addEventListener('change', timeOutChangeHandler);
+
+const getSelectedTime = function (valueTime, collection) {
+  for (let i = 0; i < collection.length; i++) {
+    collection[i].selected = valueTime === collection[i].value;
+  }
+};
+
+const timeChangeHandler = function (evt) {
+  const valueTime = evt.target.value;
+  let collection;
+  if (evt.target.id === 'timein') {
+    collection = adTimeOutList;
+  }
+  else collection = adTimeInList;
+
+  getSelectedTime(valueTime, collection);
+};
+
+adTimeInSelect.addEventListener('change', timeChangeHandler);
+adTimeOutSelect.addEventListener('change', timeChangeHandler);
