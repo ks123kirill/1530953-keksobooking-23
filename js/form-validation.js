@@ -1,3 +1,5 @@
+import {keyTypeList} from './create-card.js';
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE_VALUE = 1000000;
@@ -7,7 +9,10 @@ const adPriceInput = adForm.querySelector('#price');
 const adRoomNumberSelect = adForm.querySelector('#room_number');
 const adCapacitySelect = adForm.querySelector('#capacity');
 const adCapacityInputList = adCapacitySelect.children;
-const keyValueList = {
+const adTypeSelect = adForm.querySelector('#type');
+const adTimeInSelect = adForm.querySelector('#timein');
+const adTimeOutSelect = adForm.querySelector('#timeout');
+const keyRoomGuestList = {
   '100 rooms': '100',
   '0 guests': '0',
 };
@@ -29,6 +34,7 @@ adTitleInput.addEventListener('input', () => {
 
 adPriceInput.addEventListener('input', () => {
   const valuePriceInput = adPriceInput.value;
+
   if (valuePriceInput > MAX_PRICE_VALUE) {
     adPriceInput.setCustomValidity(`Максимальная стоимость ${MAX_PRICE_VALUE}`);
   }
@@ -49,16 +55,16 @@ const getDisabledCapacity = function () {
 /* getDisabledCapacity() устанавливает исходные настройки выбора: capacity options не имеющие атрибут selected, получают атрибут disabled. */
 getDisabledCapacity();
 
-const filterChangeHandler = function (evt) {
+const roomNumberChangeHandler = function (evt) {
   const valueRoomNumber = evt.target.value;
 
   for (let i = 0; i < adCapacityInputList.length; i++) {
 
-    if (((valueRoomNumber === keyValueList['100 rooms']) &&
-      (adCapacityInputList[i].value === keyValueList['0 guests'])) ||
-      ((valueRoomNumber !== keyValueList['100 rooms']) &&
+    if (((valueRoomNumber === keyRoomGuestList['100 rooms']) &&
+      (adCapacityInputList[i].value === keyRoomGuestList['0 guests'])) ||
+      ((valueRoomNumber !== keyRoomGuestList['100 rooms']) &&
       (valueRoomNumber >= adCapacityInputList[i].value) &&
-      (adCapacityInputList[i].value !== keyValueList['0 guests']))) {
+      (adCapacityInputList[i].value !== keyRoomGuestList['0 guests']))) {
       adCapacityInputList[i].disabled = false;
       adCapacityInputList[i].selected = true;
       continue;
@@ -68,4 +74,26 @@ const filterChangeHandler = function (evt) {
   }
 };
 
-adRoomNumberSelect.addEventListener('change', filterChangeHandler);
+adRoomNumberSelect.addEventListener('change', roomNumberChangeHandler);
+
+const typeChangeHandler = function (evt) {
+  adPriceInput.value = null;
+  const valueType = evt.target.value;
+
+  adPriceInput.placeholder = keyTypeList[valueType].price;
+  adPriceInput.min = keyTypeList[valueType].price;
+};
+
+adTypeSelect.addEventListener('change', typeChangeHandler);
+
+const timeInChangeHandler = function (evt) {
+  adTimeOutSelect.value = evt.target.value;
+};
+
+adTimeInSelect.addEventListener('change', timeInChangeHandler);
+
+const timeOutChangeHandler = function (evt) {
+  adTimeInSelect.value = evt.target.value;
+};
+
+adTimeOutSelect.addEventListener('change', timeOutChangeHandler);

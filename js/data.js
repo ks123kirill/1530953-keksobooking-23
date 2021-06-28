@@ -22,7 +22,10 @@ const LOCATION_Y_MAX = 139.80000;
 const NUMBERS_AFTER_POINT = 5;
 
 const getAuthor = (iteration) => {
-  const object = {avatar:`img/avatars/user0${iteration}.png`};
+  let object = {avatar:`img/avatars/user0${iteration}.png`};
+  if (iteration >= 10) {
+    object = {avatar:`img/avatars/user${iteration}.png`};
+  }
   return object;
 };
 

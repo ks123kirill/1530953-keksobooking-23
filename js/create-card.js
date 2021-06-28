@@ -1,20 +1,26 @@
 const cardTemplateFragment = document.querySelector('#card').content;
 const templateCard = cardTemplateFragment.querySelector('.popup');
-
-const getCardType = function (key) {
-  const typeList = {
-    'palace': 'Дворец',
-    'flat': 'Квартира',
-    'house': 'Дом',
-    'bungalow': 'Бунгало',
-    'hotel': 'Отель',
-  };
-
-  const findValue = function (type) {
-    return typeList[type];
-  };
-
-  return findValue(key);
+const keyTypeList = {
+  palace: {
+    name: 'Дворец',
+    price: '10000',
+  },
+  flat: {
+    name: 'Квартира',
+    price: '5000',
+  },
+  house: {
+    name: 'Дом',
+    price: '5000',
+  },
+  hotel: {
+    name: 'Отель',
+    price: '3000',
+  },
+  bungalow: {
+    name: 'Бунгало',
+    price: '0',
+  },
 };
 
 const getCardFeatures = function (dataFeatures, featureList) {
@@ -82,7 +88,8 @@ const getCard = function (index) {
   isDataForVariable(index.offer.address, popupAddress, 'textContent');
   isDataForVariable(index.offer.price, popupPrice, 'textContent');
   popupPrice.insertAdjacentHTML('beforeend', '<span> ₽/ночь</span>');
-  isDataForVariable(getCardType(index.offer.type), popupType, 'textContent');
+  isDataForVariable(keyTypeList[index.offer.type].name, popupType, 'textContent');
+
 
   if (index.offer.rooms && index.offer.guests) {
     popupCapacity.textContent =
@@ -106,4 +113,4 @@ const getCard = function (index) {
   return element;
 };
 
-export {getCard};
+export {getCard, keyTypeList};
