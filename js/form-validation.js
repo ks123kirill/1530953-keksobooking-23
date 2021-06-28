@@ -124,7 +124,9 @@ const timeChangeHandler = function (evt) {
   if (evt.target.id === 'timein') {
     collection = adTimeOutList;
   }
-  else collection = adTimeInList;
+  else {
+    collection = adTimeInList;
+  }
 
   getSelectedTime(valueTime, collection);
 };
