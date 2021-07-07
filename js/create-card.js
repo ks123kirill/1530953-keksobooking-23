@@ -24,6 +24,9 @@ const keyTypeList = {
 };
 
 const getCardFeatures = function (dataFeatures, featureList) {
+  if (!dataFeatures) {
+    return null;
+  }
   const modifiers = dataFeatures.map((feature) => `popup__feature--${feature}`);
   featureList.querySelectorAll('.popup__feature').forEach((item) => {
     const modifier = item.classList[1];
@@ -34,6 +37,9 @@ const getCardFeatures = function (dataFeatures, featureList) {
 };
 
 const getCardPhotos = function (data, popupPhoto, popupPhotos) {
+  if (!data) {
+    return null;
+  }
   data.forEach((item) => {
     const newImg = popupPhoto.cloneNode(true);
     newImg.src = item;
@@ -47,7 +53,7 @@ const isDataForFunction = (data, item) => {
   if (data) {
     return data;
   }
-  return item.style = 'display: none';
+  item.style = 'display: none';
 };
 
 const isDataForVariable = (data, item, keyword) => {
