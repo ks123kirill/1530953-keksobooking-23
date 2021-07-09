@@ -1,4 +1,7 @@
 import {keyTypeList} from './create-card.js';
+import {sendData} from './fetch.js';
+import {adFormResetLocation} from './map.js';
+import {getPopupSuccess, getPopupError} from './modals.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -12,6 +15,9 @@ const adCapacityInputList = adCapacitySelect.children;
 const adTypeSelect = adForm.querySelector('#type');
 const adTimeInSelect = adForm.querySelector('#timein');
 const adTimeOutSelect = adForm.querySelector('#timeout');
+const adFormReset = adForm.querySelector('.ad-form__reset');
+const mapFilters = document.querySelector('.map__filters');
+
 const keyRoomGuestList = {
   '100 rooms': '100',
   '0 guests': '0',
@@ -22,24 +28,34 @@ adTitleInput.addEventListener('input', () => {
 
   if (valueLength < MIN_TITLE_LENGTH) {
     adTitleInput.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - valueLength} символов`);
+    adTitleInput.style.border = '3px solid red';
   }
   else if (valueLength > MAX_TITLE_LENGTH) {
+    /* Chrome, FireFox не позволяют вводить символы превышающее maxlength="100" в разметке, поэтому эта валидация не показывается на экране */
     adTitleInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH} символы`);
   }
   else {
     adTitleInput.setCustomValidity('');
+    adTitleInput.style.border = 'none';
   }
   adTitleInput.reportValidity();
 });
 
 adPriceInput.addEventListener('input', () => {
   const valuePriceInput = adPriceInput.value;
+  const valuePlaceholder = adPriceInput.placeholder;
 
   if (valuePriceInput > MAX_PRICE_VALUE) {
     adPriceInput.setCustomValidity(`Максимальная стоимость ${MAX_PRICE_VALUE}`);
+    adPriceInput.style.border = '3px solid red';
+  }
+  else if (valuePriceInput < Number(valuePlaceholder)) {
+    adPriceInput.setCustomValidity(`Минимальная стоимость ${valuePlaceholder}`);
+    adPriceInput.style.border = '3px solid red';
   }
   else {
     adPriceInput.setCustomValidity('');
+    adPriceInput.style.border = 'none';
   }
   adPriceInput.reportValidity();
 });
@@ -97,3 +113,30 @@ const timeOutChangeHandler = function (evt) {
 };
 
 adTimeOutSelect.addEventListener('change', timeOutChangeHandler);
+
+const resetList = (onSuccess) => {
+  adForm.reset();
+  adTitleInput.style.border = 'none';
+  adPriceInput.style.border = 'none';
+  adPriceInput.placeholder = keyTypeList[adTypeSelect.value].price;
+  adFormResetLocation();
+  mapFilters.reset(); // Временное решение. Не реализован сброс фильтрации меток, фильтр не работает.
+  onSuccess ? getPopupSuccess() : !getPopupSuccess();
+};
+
+const adFormResetHandler = (evt) => {
+  evt.preventDefault();
+  resetList();
+};
+
+adFormReset.addEventListener('click', adFormResetHandler);
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  sendData(
+    resetList,
+    getPopupError,
+    new FormData(evt.target),
+  );
+});

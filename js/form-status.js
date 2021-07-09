@@ -21,4 +21,12 @@ const statusActivityPage = function (isData) {
   }
 };
 
-export {statusActivityPage};
+const filterDisabled = () => {
+  mapFilters.classList.add('ad-form--disabled');
+
+  for (let i = 0; i < mapFiltersChildren.length; i++) {
+    mapFiltersChildren[i].disabled = false;
+  }
+};
+
+export {statusActivityPage, filterDisabled};
