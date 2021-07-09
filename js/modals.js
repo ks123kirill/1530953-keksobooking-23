@@ -17,7 +17,7 @@ popupError.classList.add('hidden');
 const closePopup = () => {
   popupSuccess.classList.add('hidden');
   popupError.classList.add('hidden');
-  // removePopupListener();
+  removePopupListener();
 };
 
 const onPopupEscdown = (evt) => {
@@ -49,10 +49,10 @@ const onErrorButtonClick = () => {
 
 errorButton.addEventListener('click', onErrorButtonClick);
 
-// const removePopupListener = () => {
-//   document.removeEventListener('click', onPopupClick);
-//   document.removeEventListener('keydown', onPopupEscdown);
-//   errorButton.removeEventListener('click', onErrorButtonClick);
-// };
+function removePopupListener () {
+  document.removeEventListener('click', onPopupClick);
+  document.removeEventListener('keydown', onPopupEscdown);
+  errorButton.removeEventListener('click', onErrorButtonClick);
+}
 
 export {getPopupSuccess, getPopupError};
