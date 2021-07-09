@@ -1,6 +1,7 @@
 import {keyTypeList} from './create-card.js';
 import {sendData} from './fetch.js';
 import {adFormResetLocation} from './map.js';
+import {getPopupSuccess, getPopupError} from './modals.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -113,22 +114,29 @@ const timeOutChangeHandler = function (evt) {
 
 adTimeOutSelect.addEventListener('change', timeOutChangeHandler);
 
+const resetList = (onSuccess) => {
+  adForm.reset();
+  adTitleInput.style.border = 'none';
+  adPriceInput.style.border = 'none';
+  adPriceInput.placeholder = keyTypeList[adTypeSelect.value].price;
+  adFormResetLocation();
+  mapFilters.reset(); // Временное решение. Не реализован сброс фильтрации меток, фильтр не работает.
+  onSuccess ? getPopupSuccess() : !getPopupSuccess();
+};
+
+const adFormResetHandler = (evt) => {
+  evt.preventDefault();
+  resetList();
+};
+
+adFormReset.addEventListener('click', adFormResetHandler);
+
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   sendData(
+    resetList,
+    getPopupError,
     new FormData(evt.target),
-    adForm.reset(),
-    mapFilters.reset(),
   );
 });
-
-const adFormResetHandler = () => {
-  adTitleInput.style.border = 'none';
-  adPriceInput.style.border = 'none';
-  /* Функция adFormResetLocation() прописана не явно! Не принимал параметром, потому что не работала почему то */
-  adFormResetLocation(); // Не восстанавливается адрес
-  mapFilters.reset(); // Временное решение. Не реализован сброс фильтрации меток, фильтр не работает.
-};
-
-adFormReset.addEventListener('click', adFormResetHandler);

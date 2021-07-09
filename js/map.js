@@ -104,12 +104,7 @@ const adFormResetLocation = () => {
       },
     );
 
-  // console.log(addressInput.value);
   addressInput.value = `${mainMarker._latlng.lat.toFixed(5)}, ${mainMarker._latlng.lng.toFixed(5)}`;
-  // console.log(addressInput.value);
-
-  /* Почему то addressInput.value меняет значение, но не отражается на экране?
-  Особенности работы type="reset"? Также addressInput.value должен был поменять value на 52 строчке - mainMarker.on('moveend', (evt) => { */
 };
 
 export {getMapPoints, adFormResetLocation};

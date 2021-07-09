@@ -1,5 +1,4 @@
 import {showAlert} from './util.js';
-import {getPopupSuccess, getPopupError} from './modals.js';
 import {filterDisabled} from './form-status.js';
 
 const getData = (onSuccess) => {
@@ -14,14 +13,13 @@ const getData = (onSuccess) => {
     .then((ads) => {
       onSuccess(ads);
     })
-    .catch((err) => {
-      err;
+    .catch(() => {
       filterDisabled();
       showAlert('Ошибка загрузки данных с сервера : - (');
     });
 };
 
-const sendData = (body, adFormReset, mapFiltersReset) => {
+const sendData = (onSuccess, onFail, body) => {
   fetch('https://23.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
@@ -29,16 +27,14 @@ const sendData = (body, adFormReset, mapFiltersReset) => {
     })
     .then((response) => {
       if (response.ok) {
-        getPopupSuccess();
-        adFormReset; // Не восстанавливается адрес
-        mapFiltersReset;
+        onSuccess(true);
       }
       else {
-        getPopupError();
+        onFail();
       }
     })
     .catch(() => {
-      getPopupError();
+      onFail();
     });
 };
 

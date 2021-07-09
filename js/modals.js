@@ -17,8 +17,7 @@ popupError.classList.add('hidden');
 const closePopup = () => {
   popupSuccess.classList.add('hidden');
   popupError.classList.add('hidden');
-  // eslint-disable-next-line no-use-before-define
-  removePopupListener();
+  // removePopupListener();
 };
 
 const onPopupEscdown = (evt) => {
@@ -50,10 +49,10 @@ const onErrorButtonClick = () => {
 
 errorButton.addEventListener('click', onErrorButtonClick);
 
-const removePopupListener = () => {
-  document.removeEventListener('click', onPopupClick);
-  document.removeEventListener('keydown', onPopupEscdown);
-  errorButton.removeEventListener('click', onErrorButtonClick);
-};
+// const removePopupListener = () => {
+//   document.removeEventListener('click', onPopupClick);
+//   document.removeEventListener('keydown', onPopupEscdown);
+//   errorButton.removeEventListener('click', onErrorButtonClick);
+// };
 
 export {getPopupSuccess, getPopupError};
