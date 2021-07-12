@@ -1,4 +1,4 @@
-import {isEscEvent} from './util.js';
+import {isEscEvent} from './utils.js';
 
 const successTemplateFragment = document.querySelector('#success').content;
 const successFragment = successTemplateFragment.querySelector('.success');

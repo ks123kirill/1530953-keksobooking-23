@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
+const TIMEOUT_DALAY = 500;
 
 function randomInteger(min, max) {
   if (min >= 0 && max >= 0 && min < max) {
@@ -43,5 +44,13 @@ const showAlert = (message) => {
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
+function debounce (callback) {
+  let timeoutId;
 
-export {randomInteger, randomFloat, showAlert, isEscEvent};
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DALAY);
+  };
+}
+
+export {randomInteger, randomFloat, showAlert, isEscEvent, debounce};

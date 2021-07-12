@@ -1,11 +1,9 @@
 /* statusActivityPage() - Функция активация страницы. True - данные с сервера получены и страница активная, false - данные не получены и страница заблокирована */
 import {statusActivityPage} from './form-status.js';
-// getCard(); // Функция создает одно объявление на основе переданного элемента из массива
 import {getCard} from './create-card.js';
 // import '../leaflet/leaflet.js'; // Не подключается
 
 statusActivityPage(false);
-
 
 const addressInput = document.querySelector('#address');
 addressInput.readOnly = true;
@@ -52,8 +50,11 @@ mainMarker.on('moveend', (evt) => {
   addressInput.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
+const markerGroup = L.layerGroup().addTo(map);
 
 const getMapPoints = function (array) {
+
+  markerGroup.clearLayers();
 
   array.forEach(({author, offer, location}) => {
     const icon = L.icon(
@@ -78,10 +79,11 @@ const getMapPoints = function (array) {
     );
 
     marker
-      .addTo(map)
+      .addTo(markerGroup)
       .bindPopup(getCard({author, offer, location}),
         {
           keepInView: true,
+          minWidth: 300,
           maxHeight: 400,
         },
       );

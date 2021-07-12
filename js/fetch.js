@@ -1,4 +1,4 @@
-import {showAlert} from './util.js';
+import {showAlert} from './utils.js';
 import {filterDisabled} from './form-status.js';
 
 const getData = (onSuccess) => {
