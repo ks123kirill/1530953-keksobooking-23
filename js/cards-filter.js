@@ -26,32 +26,8 @@ const keyHousingPrice = {
   },
 };
 
-function setHousingTypeChange (cb) {
-  housingType.addEventListener('change', () => {
-    cb();
-  });
-}
-
-function setHousingRoomsChange (cb) {
-  housingRooms.addEventListener('change', () => {
-    cb();
-  });
-}
-
-function setHousingPriceChange (cb) {
-  housingPrice.addEventListener('change', () => {
-    cb();
-  });
-}
-
-function setHousingGuestsChange (cb) {
-  housingGuests.addEventListener('change', () => {
-    cb();
-  });
-}
-
-function setHousingFeaturesChange (cb) {
-  housingFeatures.addEventListener('change', () => {
+function formFilterListener (cb) {
+  formFilters.addEventListener('change', () => {
     cb();
   });
 }
@@ -59,63 +35,54 @@ function setHousingFeaturesChange (cb) {
 function getFilteredData (data) {
   const array = data
     .slice()
-    .sort(compareCards);
-
-  const rankMax = array[0].rank;
-
-  function isRankMax(value) {
-    return value ? value.rank === rankMax : false;
-  }
-
-  const newArray = array.filter(isRankMax);
-
-  getMapPoints(newArray.slice(0, MAX_POINTS_MAP));
+    .filter(getAfterFilters);
+  getMapPoints(array.slice(0, MAX_POINTS_MAP));
 }
 
-const getCardRank = (card) => {
+function getAfterFilters (card) {
+  return isCardValid(card);
+}
 
-  let rank = 0;
+function isCardValid (item) {
+  return (isHousingType(item) &&
+          isHousingPrice(item) &&
+          isHousingRooms(item) &&
+          isHousingGuests(item) &&
+          isHousingFeatures(item));
+}
 
-  if (card.offer.type === housingType.value) {
-    rank += 1;
-  }
+function isHousingType (item) {
+  return ((item.offer.type === housingType.value) || (housingType.value === 'any'));
+}
 
-  if ((card.offer.price >= keyHousingPrice[housingPrice.value].min) &&
-      (card.offer.price <= keyHousingPrice[housingPrice.value].max) &&
-      housingPrice.value !== 'any') {
-    rank += 1;
-  }
+function isHousingPrice (item) {
+  return (((item.offer.price >= keyHousingPrice[housingPrice.value].min) &&
+  (item.offer.price <= keyHousingPrice[housingPrice.value].max)) ||
+  (housingPrice.value === 'any'));
+}
 
-  if (card.offer.rooms === Number(housingRooms.value)) {
-    rank += 1;
-  }
+function isHousingRooms (item) {
+  return ((item.offer.rooms === Number(housingRooms.value)) || (housingRooms.value === 'any'));
+}
 
-  if (card.offer.guests === Number(housingGuests.value)) {
-    rank += 1;
-  }
+function isHousingGuests (item) {
+  return ((item.offer.guests === Number(housingGuests.value)) || (housingGuests.value === 'any'));
+}
 
-  const inputListFeatures = housingFeatures.querySelectorAll('.map__checkbox');
-  if (card.offer.features) {
-    for (let i = 0; i < inputListFeatures.length; i++ ) {
-      for (let j = 0; j < card.offer.features.length; j++) {
-        if (inputListFeatures[i].checked &&
-          (inputListFeatures[i].value === card.offer.features[j])) {
-          rank += 1;
-        }
+// Использовал :checked, .includes() - Но все равно те же методы, только вид сбоку.
+function isHousingFeatures (item) {
+  const featuresCheckedList = housingFeatures.querySelectorAll('input:checked');
+  const array = [];
+  let counter = 0;
+  if (item.offer.features) {
+    for (let i = 0; i < featuresCheckedList.length; i++) {
+      array.push(featuresCheckedList[i].value);
+      if (item.offer.features.includes(array[i])) {
+        counter++;
       }
     }
+    return counter === array.length;
   }
-
-  card.rank = rank;
-  return rank;
-};
-
-
-function compareCards (cardA, cardB) {
-  const rankA = getCardRank(cardA);
-  const rankB = getCardRank(cardB);
-
-  return rankB - rankA;
 }
 
-export {getFilteredData, setHousingTypeChange, setHousingPriceChange, setHousingRoomsChange, setHousingGuestsChange, setHousingFeaturesChange};
+export {getFilteredData, formFilterListener};

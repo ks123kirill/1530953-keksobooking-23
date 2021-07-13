@@ -2,7 +2,7 @@ import {keyTypeList} from './create-card.js';
 import {sendData} from './fetch.js';
 import {adFormResetLocation} from './map.js';
 import {getPopupSuccess, getPopupError} from './modals.js';
-import {getData} from './fetch.js';
+import {dataServer} from './fetch.js';
 import {getFilteredData} from './cards-filter.js';
 
 
@@ -129,12 +129,8 @@ const resetList = (onSuccess) => {
 
 function mapFiltersReset () {
   mapFilters.reset();
-
-  getData((data) => { // Возможно не оптимально делать повторные запросы.
-    getFilteredData(data);
-  });
+  getFilteredData(dataServer[0]); // Массив многомерный, поэтому нужно указать индекс 'строки'
 }
-
 
 const adFormResetHandler = (evt) => {
   evt.preventDefault();
