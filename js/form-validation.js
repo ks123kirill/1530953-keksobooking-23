@@ -2,6 +2,9 @@ import {keyTypeList} from './create-card.js';
 import {sendData} from './fetch.js';
 import {adFormResetLocation} from './map.js';
 import {getPopupSuccess, getPopupError} from './modals.js';
+import {dataServer} from './fetch.js';
+import {getFilteredData} from './cards-filter.js';
+
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -120,9 +123,14 @@ const resetList = (onSuccess) => {
   adPriceInput.style.border = 'none';
   adPriceInput.placeholder = keyTypeList[adTypeSelect.value].price;
   adFormResetLocation();
-  mapFilters.reset(); // Временное решение. Не реализован сброс фильтрации меток, фильтр не работает.
+  mapFiltersReset();
   onSuccess ? getPopupSuccess() : !getPopupSuccess();
 };
+
+function mapFiltersReset () {
+  mapFilters.reset();
+  getFilteredData(dataServer.cards);
+}
 
 const adFormResetHandler = (evt) => {
   evt.preventDefault();
