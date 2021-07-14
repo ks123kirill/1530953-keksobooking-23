@@ -1,6 +1,6 @@
 import {showAlert} from './utils.js';
 import {filterDisabled} from './form-status.js';
-const dataServer = [];
+const dataServer = {};
 
 const getData = (onSuccess) => {
   fetch('https://23.javascript.pages.academy/keksobooking/data')
@@ -13,7 +13,7 @@ const getData = (onSuccess) => {
     .then((response) => response.json())
     .then((ads) => {
       onSuccess(ads);
-      dataServer.push(ads);
+      dataServer.somedata = ads;
     })
     .catch(() => {
       filterDisabled();
