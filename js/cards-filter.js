@@ -35,12 +35,8 @@ function formFilterListener (cb) {
 function getFilteredData (data) {
   const array = data
     .slice()
-    .filter(getAfterFilters);
+    .filter(isCardValid);
   getMapPoints(array.slice(0, MAX_POINTS_MAP));
-}
-
-function getAfterFilters (card) {
-  return isCardValid(card);
 }
 
 function isCardValid (item) {
@@ -69,20 +65,18 @@ function isHousingGuests (item) {
   return ((item.offer.guests === Number(housingGuests.value)) || (housingGuests.value === 'any'));
 }
 
-// Использовал :checked, .includes() - Но все равно те же методы, только вид сбоку.
 function isHousingFeatures (item) {
   const featuresCheckedList = housingFeatures.querySelectorAll('input:checked');
-  const array = [];
-  let counter = 0;
-  if (item.offer.features) {
+  let flag = !featuresCheckedList.length >= 1;
+  if (item.offer.features && featuresCheckedList.length >= 1) {
     for (let i = 0; i < featuresCheckedList.length; i++) {
-      array.push(featuresCheckedList[i].value);
-      if (item.offer.features.includes(array[i])) {
-        counter++;
+      if (!item.offer.features.includes(featuresCheckedList[i].value)) {
+        return flag = false;
       }
     }
-    return counter === array.length;
+    flag = true;
   }
+  return flag;
 }
 
 export {getFilteredData, formFilterListener};

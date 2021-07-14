@@ -129,7 +129,7 @@ const resetList = (onSuccess) => {
 
 function mapFiltersReset () {
   mapFilters.reset();
-  getFilteredData(dataServer[0]); // Массив многомерный, поэтому нужно указать индекс 'строки'
+  getFilteredData(dataServer[0]); // Массив многомерный, поэтому нужно указать индекс
 }
 
 const adFormResetHandler = (evt) => {

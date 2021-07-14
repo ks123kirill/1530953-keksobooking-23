@@ -13,7 +13,7 @@ const getData = (onSuccess) => {
     .then((response) => response.json())
     .then((ads) => {
       onSuccess(ads);
-      dataServer.push(ads); // как то можно через функцию, не разобрался.
+      dataServer.push(ads);
     })
     .catch(() => {
       filterDisabled();
