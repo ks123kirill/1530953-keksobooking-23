@@ -13,7 +13,7 @@ const getData = (onSuccess) => {
     .then((response) => response.json())
     .then((ads) => {
       onSuccess(ads);
-      dataServer.somedata = ads;
+      dataServer.cards = ads;
     })
     .catch(() => {
       filterDisabled();

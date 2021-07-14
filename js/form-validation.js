@@ -129,7 +129,7 @@ const resetList = (onSuccess) => {
 
 function mapFiltersReset () {
   mapFilters.reset();
-  getFilteredData(dataServer.somedata);
+  getFilteredData(dataServer.cards);
 }
 
 const adFormResetHandler = (evt) => {
