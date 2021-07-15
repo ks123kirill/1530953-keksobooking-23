@@ -4,6 +4,7 @@ import {adFormResetLocation} from './map.js';
 import {getPopupSuccess, getPopupError} from './modals.js';
 import {dataServer} from './fetch.js';
 import {getFilteredData} from './cards-filter.js';
+import {inputFileReset} from './upload-photo.js';
 
 
 const MIN_TITLE_LENGTH = 30;
@@ -123,6 +124,7 @@ const resetList = (onSuccess) => {
   adPriceInput.style.border = 'none';
   adPriceInput.placeholder = keyTypeList[adTypeSelect.value].price;
   adFormResetLocation();
+  inputFileReset();
   mapFiltersReset();
   onSuccess ? getPopupSuccess() : !getPopupSuccess();
 };
