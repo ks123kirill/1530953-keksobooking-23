@@ -11,13 +11,7 @@ const adFormUpload = adForm.querySelector('.ad-form__upload');
 const adFormInput = adFormUpload.querySelector('.ad-form__input');
 const adFormPhoto = adForm.querySelector('.ad-form__photo');
 
-adFormHeaderInput.addEventListener('change',
-  () => adFormInputHandler(adFormHeaderInput, previewAvatar));
-
-adFormInput.addEventListener('change',
-  () => adFormInputHandler(adFormInput, adFormPhoto));
-
-function adFormInputHandler (input, preview) {
+const adFormInputLoadHandler = (input, preview) => {
   const file = input.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
@@ -38,14 +32,18 @@ function adFormInputHandler (input, preview) {
     });
     reader.readAsDataURL(file);
   }
-}
+};
 
-function inputFileReset () {
+adFormHeaderInput.addEventListener('change',
+  () => adFormInputLoadHandler(adFormHeaderInput, previewAvatar));
+
+adFormInput.addEventListener('change',
+  () => adFormInputLoadHandler(adFormInput, adFormPhoto));
+
+const inputFileReset = () => {
   previewAvatar.src = avatarDefault;
   const adFormPhotoList = adFormPhoto.querySelectorAll('img');
-  for (const item of adFormPhotoList) {
-    item.remove();
-  }
-}
+  adFormPhotoList.forEach((item) => item.remove());
+};
 
 export {inputFileReset};

@@ -1,22 +1,6 @@
 const ALERT_SHOW_TIME = 5000;
 const TIMEOUT_DALAY = 500;
 
-function randomInteger(min, max) {
-  if (min >= 0 && max >= 0 && min < max) {
-    const rand = min + Math.random() * (max + 1 - min);
-    return Math.floor(rand);
-  }
-  return 'Ошибка! Введенные значения диапазона недопустимы!';
-}
-
-function randomFloat(min, max, countNumber) {
-  if (min >= 0 && max >= 0 && min < max && countNumber >= 0) {
-    const rand = min + Math.random() * (max - min);
-    return rand.toFixed(countNumber);
-  }
-  return 'Ошибка! Введенные значения диапазона недопустимы!';
-}
-
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.width = '500px';
@@ -44,13 +28,13 @@ const showAlert = (message) => {
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-function debounce (callback) {
+const debounce = (callback) => {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DALAY);
   };
-}
+};
 
-export {randomInteger, randomFloat, showAlert, isEscEvent, debounce};
+export {showAlert, isEscEvent, debounce};

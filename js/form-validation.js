@@ -6,10 +6,10 @@ import {dataServer} from './fetch.js';
 import {getFilteredData} from './cards-filter.js';
 import {inputFileReset} from './upload-photo.js';
 
-
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE_VALUE = 1000000;
+
 const adForm = document.querySelector('.ad-form');
 const adTitleInput = adForm.querySelector('#title');
 const adPriceInput = adForm.querySelector('#price');
@@ -35,7 +35,6 @@ adTitleInput.addEventListener('input', () => {
     adTitleInput.style.border = '3px solid red';
   }
   else if (valueLength > MAX_TITLE_LENGTH) {
-    /* Chrome, FireFox не позволяют вводить символы превышающее maxlength="100" в разметке, поэтому эта валидация не показывается на экране */
     adTitleInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH} символы`);
   }
   else {
@@ -64,7 +63,7 @@ adPriceInput.addEventListener('input', () => {
   adPriceInput.reportValidity();
 });
 
-const getDisabledCapacity = function () {
+const getDisabledCapacity = () => {
   for (let i = 0; i < adCapacityInputList.length; i++) {
     if (!adCapacityInputList[i].selected) {
       adCapacityInputList[i].disabled = true;
@@ -72,10 +71,9 @@ const getDisabledCapacity = function () {
   }
 };
 
-/* getDisabledCapacity() устанавливает исходные настройки выбора: capacity options не имеющие атрибут selected, получают атрибут disabled. */
 getDisabledCapacity();
 
-const roomNumberChangeHandler = function (evt) {
+const roomNumberChangeHandler = (evt) => {
   const valueRoomNumber = evt.target.value;
 
   for (let i = 0; i < adCapacityInputList.length; i++) {
@@ -96,7 +94,7 @@ const roomNumberChangeHandler = function (evt) {
 
 adRoomNumberSelect.addEventListener('change', roomNumberChangeHandler);
 
-const typeChangeHandler = function (evt) {
+const typeChangeHandler = (evt) => {
   adPriceInput.value = null;
   const valueType = evt.target.value;
 
@@ -106,17 +104,18 @@ const typeChangeHandler = function (evt) {
 
 adTypeSelect.addEventListener('change', typeChangeHandler);
 
-const timeInChangeHandler = function (evt) {
-  adTimeOutSelect.value = evt.target.value;
-};
+const timeInChangeHandler = (evt) => adTimeOutSelect.value = evt.target.value;
 
 adTimeInSelect.addEventListener('change', timeInChangeHandler);
 
-const timeOutChangeHandler = function (evt) {
-  adTimeInSelect.value = evt.target.value;
-};
+const timeOutChangeHandler = (evt) => adTimeInSelect.value = evt.target.value;
 
 adTimeOutSelect.addEventListener('change', timeOutChangeHandler);
+
+const mapFiltersReset = () => {
+  mapFilters.reset();
+  getFilteredData(dataServer.cards);
+};
 
 const resetList = (onSuccess) => {
   adForm.reset();
@@ -128,11 +127,6 @@ const resetList = (onSuccess) => {
   mapFiltersReset();
   onSuccess ? getPopupSuccess() : !getPopupSuccess();
 };
-
-function mapFiltersReset () {
-  mapFilters.reset();
-  getFilteredData(dataServer.cards);
-}
 
 const adFormResetHandler = (evt) => {
   evt.preventDefault();

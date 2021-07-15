@@ -3,7 +3,7 @@ const adFormChildren = adForm.children;
 const mapFilters = document.querySelector('.map__filters');
 const mapFiltersChildren = mapFilters.children;
 
-const statusActivityPage = function (isData) {
+const statusActivityPage = (isData) => {
   if (!isData) {
     adForm.classList.add('ad-form--disabled');
     mapFilters.classList.add('ad-form--disabled');

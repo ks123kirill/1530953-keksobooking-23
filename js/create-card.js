@@ -23,7 +23,7 @@ const keyTypeList = {
   },
 };
 
-const getCardFeatures = function (dataFeatures, featureList) {
+const getCardFeatures = (dataFeatures, featureList) => {
   if (!dataFeatures) {
     return null;
   }
@@ -36,7 +36,7 @@ const getCardFeatures = function (dataFeatures, featureList) {
   });
 };
 
-const getCardPhotos = function (data, popupPhoto, popupPhotos) {
+const getCardPhotos = (data, popupPhoto, popupPhotos) => {
   if (!data) {
     return null;
   }
@@ -70,13 +70,10 @@ const isDataForVariable = (data, item, keyword) => {
 
     return findValue(keyword);
   }
-  else {
-    return item.style = 'display: none';
-  }
+  return item.style = 'display: none';
 };
 
-
-const getCard = function (index) {
+const getCard = (index) => {
   const element = templateCard.cloneNode(true);
   const popupTitle = element.querySelector('.popup__title');
   const popupAddress = element.querySelector('.popup__text--address');
@@ -95,7 +92,6 @@ const getCard = function (index) {
   isDataForVariable(index.offer.price, popupPrice, 'textContent');
   popupPrice.insertAdjacentHTML('beforeend', '<span> ₽/ночь</span>');
   isDataForVariable(keyTypeList[index.offer.type].name, popupType, 'textContent');
-
 
   if (index.offer.rooms && index.offer.guests) {
     popupCapacity.textContent =

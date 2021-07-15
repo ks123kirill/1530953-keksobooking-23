@@ -1,11 +1,10 @@
-/* statusActivityPage() - Функция активация страницы. True - данные с сервера получены и страница активная, false - данные не получены и страница заблокирована */
 import {statusActivityPage} from './form-status.js';
 import {getCard} from './create-card.js';
-// import '../leaflet/leaflet.js'; // Не подключается
+
+const addressInput = document.querySelector('#address');
 
 statusActivityPage(false);
 
-const addressInput = document.querySelector('#address');
 addressInput.readOnly = true;
 
 const map = L.map('map-canvas')
