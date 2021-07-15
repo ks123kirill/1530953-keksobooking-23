@@ -14,9 +14,9 @@ const map = L.map('map-canvas')
   .on('load', () => {
     getData((data) => {
       getFilteredData(data);
+      statusActivityPage(true);
       formFilterListener(debounce(() => getFilteredData(data)));
     });
-    statusActivityPage(true);
   })
   .setView({
     lat: 35.68493,
