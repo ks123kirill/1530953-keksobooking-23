@@ -1,5 +1,8 @@
 import {statusActivityPage} from './form-status.js';
 import {getCard} from './create-card.js';
+import {getData} from './fetch.js';
+import {getFilteredData, formFilterListener} from './cards-filter.js';
+import {debounce} from './utils.js';
 
 const addressInput = document.querySelector('#address');
 
@@ -9,6 +12,10 @@ addressInput.readOnly = true;
 
 const map = L.map('map-canvas')
   .on('load', () => {
+    getData((data) => {
+      getFilteredData(data);
+      formFilterListener(debounce(() => getFilteredData(data)));
+    });
     statusActivityPage(true);
   })
   .setView({
