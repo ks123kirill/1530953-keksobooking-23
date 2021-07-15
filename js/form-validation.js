@@ -1,10 +1,10 @@
 import {keyTypeList} from './create-card.js';
 import {sendData} from './fetch.js';
-import {adFormResetLocation} from './map.js';
+import {resetAdFormLocation} from './map.js';
 import {getPopupSuccess, getPopupError} from './modals.js';
 import {dataServer} from './fetch.js';
 import {getFilteredData} from './cards-filter.js';
-import {inputFileReset} from './upload-photo.js';
+import {resetInputFile} from './upload-photo.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -112,7 +112,7 @@ const timeOutChangeHandler = (evt) => adTimeInSelect.value = evt.target.value;
 
 adTimeOutSelect.addEventListener('change', timeOutChangeHandler);
 
-const mapFiltersReset = () => {
+const resetMapFilters = () => {
   mapFilters.reset();
   getFilteredData(dataServer.cards);
 };
@@ -122,9 +122,9 @@ const resetList = (onSuccess) => {
   adTitleInput.style.border = 'none';
   adPriceInput.style.border = 'none';
   adPriceInput.placeholder = keyTypeList[adTypeSelect.value].price;
-  adFormResetLocation();
-  inputFileReset();
-  mapFiltersReset();
+  resetAdFormLocation();
+  resetInputFile();
+  resetMapFilters();
   onSuccess ? getPopupSuccess() : !getPopupSuccess();
 };
 

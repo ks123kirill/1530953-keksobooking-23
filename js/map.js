@@ -1,4 +1,4 @@
-import {statusActivityPage} from './form-status.js';
+import {getStatusActivityPage} from './form-status.js';
 import {getCard} from './create-card.js';
 import {getData} from './fetch.js';
 import {getFilteredData, formFilterListener} from './cards-filter.js';
@@ -6,7 +6,7 @@ import {debounce} from './utils.js';
 
 const addressInput = document.querySelector('#address');
 
-statusActivityPage(false);
+getStatusActivityPage(false);
 
 addressInput.readOnly = true;
 
@@ -14,7 +14,7 @@ const map = L.map('map-canvas')
   .on('load', () => {
     getData((data) => {
       getFilteredData(data);
-      statusActivityPage(true);
+      getStatusActivityPage(true);
       formFilterListener(debounce(() => getFilteredData(data)));
     });
   })
@@ -58,7 +58,7 @@ mainMarker.on('moveend', (evt) => {
 
 const markerGroup = L.layerGroup().addTo(map);
 
-const getMapPoints = function (array) {
+const getMapPoints = (array) => {
 
   markerGroup.clearLayers();
 
@@ -97,7 +97,7 @@ const getMapPoints = function (array) {
 
 };
 
-const adFormResetLocation = () => {
+const resetAdFormLocation = () => {
   map
     .setView({
       lat: 35.68493,
@@ -115,4 +115,4 @@ const adFormResetLocation = () => {
   addressInput.value = `${mainMarker._latlng.lat.toFixed(5)}, ${mainMarker._latlng.lng.toFixed(5)}`;
 };
 
-export {getMapPoints, adFormResetLocation};
+export {getMapPoints, resetAdFormLocation};

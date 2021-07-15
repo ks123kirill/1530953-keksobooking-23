@@ -1,5 +1,4 @@
 import {showAlert} from './utils.js';
-import {filterDisabled} from './form-status.js';
 const dataServer = {};
 
 const getData = (onSuccess) => {
@@ -16,7 +15,6 @@ const getData = (onSuccess) => {
       dataServer.cards = ads;
     })
     .catch(() => {
-      filterDisabled();
       showAlert('Ошибка загрузки данных с сервера : - (');
     });
 };

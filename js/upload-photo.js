@@ -40,10 +40,10 @@ adFormHeaderInput.addEventListener('change',
 adFormInput.addEventListener('change',
   () => adFormInputLoadHandler(adFormInput, adFormPhoto));
 
-const inputFileReset = () => {
+const resetInputFile = () => {
   previewAvatar.src = avatarDefault;
   const adFormPhotoList = adFormPhoto.querySelectorAll('img');
   adFormPhotoList.forEach((item) => item.remove());
 };
 
-export {inputFileReset};
+export {resetInputFile};
