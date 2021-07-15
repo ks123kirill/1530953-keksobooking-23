@@ -1,16 +1,22 @@
-/* statusActivityPage() - Функция активация страницы. True - данные с сервера получены и страница активная, false - данные не получены и страница заблокирована */
-import {statusActivityPage} from './form-status.js';
+import {getStatusActivityPage} from './form-status.js';
 import {getCard} from './create-card.js';
-// import '../leaflet/leaflet.js'; // Не подключается
-
-statusActivityPage(false);
+import {getData} from './fetch.js';
+import {getFilteredData, formFilterListener} from './cards-filter.js';
+import {debounce} from './utils.js';
 
 const addressInput = document.querySelector('#address');
+
+getStatusActivityPage(false);
+
 addressInput.readOnly = true;
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    statusActivityPage(true);
+    getData((data) => {
+      getFilteredData(data);
+      getStatusActivityPage(true);
+      formFilterListener(debounce(() => getFilteredData(data)));
+    });
   })
   .setView({
     lat: 35.68493,
@@ -52,7 +58,7 @@ mainMarker.on('moveend', (evt) => {
 
 const markerGroup = L.layerGroup().addTo(map);
 
-const getMapPoints = function (array) {
+const getMapPoints = (array) => {
 
   markerGroup.clearLayers();
 
@@ -91,7 +97,7 @@ const getMapPoints = function (array) {
 
 };
 
-const adFormResetLocation = () => {
+const resetAdFormLocation = () => {
   map
     .setView({
       lat: 35.68493,
@@ -109,4 +115,4 @@ const adFormResetLocation = () => {
   addressInput.value = `${mainMarker._latlng.lat.toFixed(5)}, ${mainMarker._latlng.lng.toFixed(5)}`;
 };
 
-export {getMapPoints, adFormResetLocation};
+export {getMapPoints, resetAdFormLocation};

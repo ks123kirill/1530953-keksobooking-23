@@ -20,39 +20,39 @@ const closePopup = () => {
   removePopupListener();
 };
 
-const onPopupEscdown = (evt) => {
+const popupEscDownHandler = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     closePopup();
   }
 };
 
-const onPopupClick = () => {
+const popupClickHandler = () => {
   closePopup();
 };
 
 const getPopupSuccess = () => {
   popupSuccess.classList.remove('hidden');
-  document.addEventListener('click', onPopupClick);
-  document.addEventListener('keydown', onPopupEscdown);
+  document.addEventListener('click', popupClickHandler);
+  document.addEventListener('keydown', popupEscDownHandler);
 };
 
 const getPopupError = () => {
   popupError.classList.remove('hidden');
-  document.addEventListener('click', onPopupClick);
-  document.addEventListener('keydown', onPopupEscdown);
+  document.addEventListener('click', popupClickHandler);
+  document.addEventListener('keydown', popupEscDownHandler);
 };
 
-const onErrorButtonClick = () => {
+const errorButtonClickHandler = () => {
   popupError.classList.remove('hidden');
 };
 
-errorButton.addEventListener('click', onErrorButtonClick);
+errorButton.addEventListener('click', errorButtonClickHandler);
 
 function removePopupListener () {
-  document.removeEventListener('click', onPopupClick);
-  document.removeEventListener('keydown', onPopupEscdown);
-  errorButton.removeEventListener('click', onErrorButtonClick);
+  document.removeEventListener('click', popupClickHandler);
+  document.removeEventListener('keydown', popupEscDownHandler);
+  errorButton.removeEventListener('click', errorButtonClickHandler);
 }
 
 export {getPopupSuccess, getPopupError};
