@@ -118,7 +118,7 @@ const resetAdFormLocation = () => {
     .setView({
       lat: MAP_CENTER_LAT,
       lng: MAP_CENTER_LNG,
-    }, 13);
+    }, MAP_SCALE);
 
   mainMarker
     .setLatLng(
