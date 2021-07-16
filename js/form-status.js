@@ -3,22 +3,19 @@ const adFormChildren = adForm.children;
 const mapFilters = document.querySelector('.map__filters');
 const mapFiltersChildren = mapFilters.children;
 
-const getStatusActivityPage = (isData) => {
+const getActivityBlock = (isData, form, collection) => {
   if (!isData) {
-    adForm.classList.add('ad-form--disabled');
-    mapFilters.classList.add('ad-form--disabled');
+    form.classList.add('ad-form--disabled');
   } else {
-    adForm.classList.remove('ad-form--disabled');
-    mapFilters.classList.remove('ad-form--disabled');
+    form.classList.remove('ad-form--disabled');
   }
-
-  for (let i = 0; i < adFormChildren.length; i++) {
-    adFormChildren[i].disabled = !isData;
-  }
-
-  for (let i = 0; i < mapFiltersChildren.length; i++) {
-    mapFiltersChildren[i].disabled = !isData;
+  for (let i = 0; i < collection.length; i++) {
+    collection[i].disabled = !isData;
   }
 };
 
-export {getStatusActivityPage};
+const getStatusActivityAdForm = (isData) => getActivityBlock(isData, adForm, adFormChildren);
+
+const getStatusActivityFilter = (isData) => getActivityBlock(isData, mapFilters, mapFiltersChildren);
+
+export {getStatusActivityAdForm, getStatusActivityFilter};

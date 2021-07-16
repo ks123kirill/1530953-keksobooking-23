@@ -1,27 +1,43 @@
-import {getStatusActivityPage} from './form-status.js';
+import {getStatusActivityAdForm, getStatusActivityFilter} from './form-status.js';
 import {getCard} from './create-card.js';
 import {getData} from './fetch.js';
 import {getFilteredData, formFilterListener} from './cards-filter.js';
 import {debounce} from './utils.js';
 
+const MAP_CENTER_LAT = 35.68493;
+const MAP_CENTER_LNG = 139.75213;
+const MAP_SCALE = 13;
+const ICON_SPECIAL_WIDTH = 52;
+const ICON_SPECIAL_HEIGHT = 52;
+const ICON_SPECIAL_ANCHOR_WIDTH = 26;
+const ICON_SPECIAL_ANCHOR_HEIGHT = 52;
+const ICON_DEFAULT_WIDTH = 40;
+const ICON_DEFAULT_HEIGHT = 40;
+const ICON_DEFAULT_ANCHOR_WIDTH = 20;
+const ICON_DEFAULT_ANCHOR_HEIGHT = 40;
+const BALOON_MIN_WIDTH = 300;
+const BALOON_MAX_HEIGHT = 400;
+
 const addressInput = document.querySelector('#address');
 
-getStatusActivityPage(false);
+getStatusActivityAdForm(false);
+getStatusActivityFilter(false);
 
 addressInput.readOnly = true;
 
 const map = L.map('map-canvas')
   .on('load', () => {
+    getStatusActivityAdForm(true);
     getData((data) => {
       getFilteredData(data);
-      getStatusActivityPage(true);
+      getStatusActivityFilter(true);
       formFilterListener(debounce(() => getFilteredData(data)));
     });
   })
   .setView({
-    lat: 35.68493,
-    lng: 139.75213,
-  }, 13);
+    lat: MAP_CENTER_LAT,
+    lng: MAP_CENTER_LNG,
+  }, MAP_SCALE);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -33,15 +49,15 @@ L.tileLayer(
 const iconSpecial = L.icon(
   {
     iconUrl: './img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
+    iconSize: [ICON_SPECIAL_WIDTH, ICON_SPECIAL_HEIGHT],
+    iconAnchor: [ICON_SPECIAL_ANCHOR_WIDTH, ICON_SPECIAL_ANCHOR_HEIGHT],
   },
 );
 
 const mainMarker = L.marker(
   {
-    lat: 35.68493,
-    lng: 139.75213,
+    lat: MAP_CENTER_LAT,
+    lng: MAP_CENTER_LNG,
   },
   {
     draggable: true,
@@ -66,8 +82,8 @@ const getMapPoints = (array) => {
     const icon = L.icon(
       {
         iconUrl: './img/pin.svg',
-        iconSize: [40, 40],
-        iconAnchor: [20,40],
+        iconSize: [ICON_DEFAULT_WIDTH, ICON_DEFAULT_HEIGHT],
+        iconAnchor: [ICON_DEFAULT_ANCHOR_WIDTH, ICON_DEFAULT_ANCHOR_HEIGHT],
       },
     );
 
@@ -89,8 +105,8 @@ const getMapPoints = (array) => {
       .bindPopup(getCard({author, offer, location}),
         {
           keepInView: true,
-          minWidth: 300,
-          maxHeight: 400,
+          minWidth: BALOON_MIN_WIDTH,
+          maxHeight: BALOON_MAX_HEIGHT,
         },
       );
   });
@@ -100,15 +116,15 @@ const getMapPoints = (array) => {
 const resetAdFormLocation = () => {
   map
     .setView({
-      lat: 35.68493,
-      lng: 139.75213,
+      lat: MAP_CENTER_LAT,
+      lng: MAP_CENTER_LNG,
     }, 13);
 
   mainMarker
     .setLatLng(
       {
-        lat: 35.68493,
-        lng: 139.75213,
+        lat: MAP_CENTER_LAT,
+        lng: MAP_CENTER_LNG,
       },
     );
 
