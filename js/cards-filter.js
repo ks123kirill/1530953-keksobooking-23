@@ -64,10 +64,12 @@ const isCardValid = (item) =>
   isHousingFeatures(item));
 
 const getFilteredData = (data) => {
-  const array = data
-    .slice()
-    .filter(isCardValid);
-  getMapPoints(array.slice(0, MAX_POINTS_MAP));
+  if (data) {
+    const array = data
+      .slice()
+      .filter(isCardValid);
+    getMapPoints(array.slice(0, MAX_POINTS_MAP));
+  }
 };
 
 const formFilterListener = (cb) => {
