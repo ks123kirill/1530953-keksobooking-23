@@ -3,7 +3,7 @@
 * Программирование: [Кирилл Скорописцев](https://htmlacademy.ru/profile/id1530953).
 * Наставник: [Денис Байдаров](https://htmlacademy.ru/profile/4er).
 
-* [Демо проекта](https://ks123kirill.github.io/1530953-keksobooking-23/)
+* [Демо проекта](https://ks123kirill.github.io/Keksobooking/)
 * [Техническое задание](Specification.md)
 
 ---
